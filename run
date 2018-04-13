@@ -1,0 +1,37 @@
+#!/bin/bash
+
+source ./env-$USER
+
+#cat sample.csv | \
+#    go run src/pass2pass/cmd/pass2pass.go \
+#        -parser lastpass \
+#        -store plain \
+#        "./templates/dir-scheme" \
+#        "./out"
+
+cat sample.csv | \
+    go run src/pass2pass/cmd/pass2pass.go \
+        -parser lastpass \
+        -store cmd \
+        -path-cleaner './cmd-path-clean.sh' \
+        -path-filter './cmd-path-filter.sh' \
+        -path-replacer './cmd-path-replace.sh' \
+        "./templates/dir-scheme" \
+        './cmd-plain.sh'
+
+#cat sample.csv | \
+#    go run src/pass2pass/cmd/pass2pass.go \
+#        -parser lastpass \
+#        -store cmd \
+#        "./templates/multiline-scheme" \
+#        './cmd-plain.sh'
+
+#cat sample.csv | \
+#    go run src/pass2pass/cmd/pass2pass.go \
+#        -parser lastpass \
+#        -store cmd \
+#        -path-cleaner './cmd-path-clean.sh' \
+#        -path-filter './cmd-path-filter.sh' \
+#        -path-replacer './cmd-path-replace.sh' \
+#        "./templates/dir-scheme" \
+#        './cmd-pass.sh'

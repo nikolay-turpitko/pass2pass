@@ -1,0 +1,24 @@
+### This file is sourced for user `nick`.
+
+## Code below choose some tools depending on OS.
+case "$(uname -s)" in
+    "Darwin")
+        # brew install coreutils
+        command -v greadlink || exit 1
+        ;;
+
+    "Linux")
+        greadlink() {
+            readlink "$@"
+        }
+        export -f greadlink
+        ;;
+
+    *)
+        echo "Your OS is not supported by this script anyway"
+        exit 1
+esac
+
+## Environment for Go development.
+
+export GOPATH=$(greadlink -f .):~/go
