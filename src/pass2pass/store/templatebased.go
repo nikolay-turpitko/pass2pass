@@ -61,7 +61,7 @@ func newTemplateBasedStore(store templateBasedStore) storeFunc {
 // prepareTemplates searches templateDir for template files, parses them and
 // returns slice of parsed templates.
 func prepareTemplates(templateDir string) (map[string]*template.Template, error) {
-	log.Printf("processing templates, folder: %s", templateDir)
+	log.Printf("processing templates, folder: '%s'", templateDir)
 	templates := map[string]*template.Template{}
 	err := filepath.Walk(
 		templateDir,
@@ -70,7 +70,7 @@ func prepareTemplates(templateDir string) (map[string]*template.Template, error)
 				return err
 			}
 			if !info.IsDir() {
-				log.Printf("processing template, file: %s", path)
+				log.Printf("processing template, file: '%s'", path)
 				tp, err := filepath.Rel(templateDir, path)
 				if err != nil {
 					return err
@@ -104,16 +104,16 @@ func processEntry(
 			return err
 		}
 		if exclude {
-			log.Printf("exclude path: %s", p)
+			log.Printf("exclude path: '%s'", p)
 			continue
 		}
-		log.Printf("processing path: %s", p)
+		log.Printf("processing path: '%s'", p)
 		p2, changed, err := paths.Transform(p)
 		if err != nil {
 			return err
 		}
 		if changed {
-			log.Printf("path: %s replaced with %s", p, p2)
+			log.Printf("path replaced:'%s' -> '%s'", p, p2)
 			p = p2
 		}
 		var b bytes.Buffer
@@ -127,7 +127,7 @@ func processEntry(
 				return err
 			}
 		}
-		log.Printf("processed path: %s", p)
+		log.Printf("processed path: '%s'", p)
 	}
 	return nil
 }

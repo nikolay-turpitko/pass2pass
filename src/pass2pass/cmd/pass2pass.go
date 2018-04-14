@@ -116,4 +116,5 @@ func init() {
 	// Subpackages shouldn't change configuration of default logger.
 	log.SetPrefix("INFO ")
 	log.SetFlags(0)
+	log.SetOutput(os.Stdout)
 }
