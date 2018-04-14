@@ -21,7 +21,9 @@ than mentioned tools are producing. Namely, it's a directory-based schema,
 which described as an "alternative approach" on the `pass`'s website.
 
 To have some more fun during this tool development and to sharpen my own skills
-I added some concurrency to it (not like it's very necessary here).
+I added some concurrency to it (not like it's very necessary here). Actually, 
+concurrency even cause errors with `gopass` when `gopass` tries to perform `git 
+commit`, so I had to wrap `gopass` invocation with `flock`.
 
 Because of my particular requirements and for more flexibility, tool supports
 pre-processing password entry paths with custom external commands/scripts

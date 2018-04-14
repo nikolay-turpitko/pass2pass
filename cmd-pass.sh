@@ -2,4 +2,4 @@
 
 # This script saves password entry using `pass` comand.
 
-pass insert -m "$1"
+flock .lock pass insert -m "$1"
