@@ -42,3 +42,7 @@ don't need it currently, so I haven't tested it with anything except `gopass`.
 I tried to make it extensible just in case I (or may be someone else) will
 need to add support of other password managers into it. It should be enough to
 add parser/store code into corresponded packages by analogy with existing one.
+
+In case of issues with GPG pinentry (login) dialog try to use `pass show <password>`
+to show some existing password, so that pass invoke GPG and ask for it's password.
+It should cache password after that and shouldn't ask it during `pass2pass` invocation.
