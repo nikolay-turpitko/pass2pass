@@ -16,17 +16,17 @@ sed -E \
     -e 's%^private/other/(.*taximaxim|s7.*)%transport/\1%g' \
     -e 's%^private/other/(.*asus|.*\.hp|zyxel)%hardware/\1%g' \
     -e 's%^private/other/hightail%depricated/hightail%g' \
-    -e 's%^private/mail-and-im/(icq|sibnet|kate.*)%depricated/mail-and-im/\1%g' \
-    -e 's%^private/mail-and-im/mail.ru%email-and-im/mailru/private%g' \
-    -e 's%^private/mail-and-im/google/tnl1977%email-and-im/google/private%g' \
+    -e 's%^private/mail-and-im/(icq|sibnet|kate.*)%depricated/email-and-im/\1%g' \
+    -e 's%^private/mail-and-im/mail.ru%email-and-im/mailru/personal%g' \
+    -e 's%^private/mail-and-im/google/tnl1977%email-and-im/google/personal%g' \
     -e 's%^private/mail-and-im/tnl.disposal.box%email-and-im/google/disposal%g' \
-    -e 's%^private/mail-and-im/zoho/tnl1977%email-and-im/zoho/private%g' \
+    -e 's%^private/mail-and-im/zoho/tnl1977%email-and-im/zoho/personal%g' \
     -e 's%^private/mail-and-im/bitlbee%email-and-im/bitlbee%g' \
     -e 's%^private/other/(.*)/%JOB/\1/%g' \
     -e 's%^private%%g' \
     -e 's%^business/job-hunting%JOB/JOB-HUNTING%g' \
     -e 's%^business/proffessional%education%g' \
-    -e 's%^business/mail-and-im/(aim|.*\.aol|yahoo!)%depricated/mail-and-im/\1%g' \
+    -e 's%^business/mail-and-im/(aim|.*\.aol|yahoo!)%depricated/email-and-im/\1%g' \
     -e 's%^business/mail-and-im/godaddy%JOB/godaddy%g' \
     -e 's%^business/mail-and-im/google/.*/%email-and-im/google/work/%g' \
     -e 's%^business/mail-and-im/zoho/.*/%email-and-im/zoho/work/%g' \
