@@ -1,6 +1,6 @@
 # pass2pass
 
-Tool for export passwords from one password manager format to another.
+Tool for migrate passwords from one password manager format to another.
 
 I created this tool for my own needs, use it on your own risk.
 
