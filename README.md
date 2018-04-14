@@ -6,8 +6,8 @@ I created this tool for my own needs, use it on your own risk.
 
 There are some other tools for this task, such as:
 
-https://github.com/roddhjav/pass-import#readme
-https://git.zx2c4.com/password-store/tree/contrib/importers/lastpass2pass.rb
+- https://github.com/roddhjav/pass-import#readme
+- https://git.zx2c4.com/password-store/tree/contrib/importers/lastpass2pass.rb
 
 Try them, they are simpler, better tested and may suit your needs.
 
