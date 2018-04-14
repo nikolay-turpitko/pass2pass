@@ -23,15 +23,15 @@ which described as an "alternative approach" on the `pass`'s website.
 To have some more fun during this tool development and to sharpen my own skills
 I added some concurrency to it (not like it's very necessary here).
 
-Because of my particular requirements and for more flexibility it supports
+Because of my particular requirements and for more flexibility, tool supports
 pre-processing password entry paths with custom external commands/scripts
 (bash/sed/awk/etc). It made the tool a bit slower than its initial native
 implementation, but this is completely optional, fast enough and quite
-convenient. There is room to improvement, if anyone ever need it - currently
-processes for commands created and deleted for every password entry, it's
-possible to refactor this code so that they were created once and data piped
-through them via their stdin/stdout. But I'm not currently in the mood to make
-this optimization.
+convenient. There is a room for improvement, if anyone ever need it:  currently
+processes for commands are created and deleted in the loop for every password
+entry. It's possible to refactor this code so that they were created only once
+at program startup and data was piped through them via their stdin/stdout. But
+I'm not currently in the mood to make this optimization.
 
 Command to store password also can be supplied via CLI, so it should be
 possible to use some other CLI password manager to import passwords, but I
