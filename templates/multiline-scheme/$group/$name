@@ -1,5 +1,7 @@
 {{.Password}}
-URL: {{.URL}}
-Username: {{.Username}}
-Extra:
-{{.Extra}}
+---
+{{if .URL}}url: {{.URL}}{{end}}
+{{if .Username}}username: {{.Username}}{{end}}
+{{range $k, $v := extractMeta "extra" .Extra}}
+{{$k}}: {{$v}}
+{{end}}

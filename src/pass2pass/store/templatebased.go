@@ -3,14 +3,15 @@ package store
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"text/template"
 
 	"pass2pass/model"
 	"pass2pass/paths"
+	"pass2pass/tmplfunc"
 )
 
 // This file contains primitives for store based on templates.
@@ -75,7 +76,9 @@ func prepareTemplates(templateDir string) (map[string]*template.Template, error)
 				if err != nil {
 					return err
 				}
-				t, err := template.ParseFiles(path)
+				t, err := template.New(filepath.Base(path)).
+					Funcs(tmplfunc.Funcs).
+					ParseFiles(path)
 				if err != nil {
 					return err
 				}
@@ -99,7 +102,7 @@ func processEntry(
 		if err != nil {
 			return err
 		}
-		exclude, err := paths.Exclude(p)
+		exclude, err := paths.Filter.Do(p)
 		if err != nil {
 			return err
 		}
@@ -108,7 +111,7 @@ func processEntry(
 			continue
 		}
 		log.Printf("processing path: '%s'", p)
-		p2, changed, err := paths.Transform(p)
+		p2, changed, err := paths.Replacer.Do(p)
 		if err != nil {
 			return err
 		}

@@ -27,9 +27,9 @@ func main() {
 
 	flag.StringVar(&parserType, "parser", "lastpass", "parser type for input data from stdin")
 	flag.StringVar(&storeType, "store", "cmd", "store type for output")
-	flag.StringVar(&pathCleaner, "path-cleaner", "", "command executed to clean path")
-	flag.StringVar(&pathFilter, "path-filter", "", "command executed to filter/exclude path")
-	flag.StringVar(&pathReplacer, "path-replacer", "", "command executed to replace path")
+	flag.StringVar(&pathCleaner, "path-cleaner", "", "command (or Go template) executed to clean path")
+	flag.StringVar(&pathFilter, "path-filter", "", "command (or Go template) executed to filter/exclude path")
+	flag.StringVar(&pathReplacer, "path-replacer", "", "command (or Go template) executed to replace path")
 
 	flag.Usage = func() {
 		w := flag.CommandLine.Output()
@@ -38,24 +38,35 @@ func main() {
 		flag.PrintDefaults()
 		fmt.Fprintf(w, "\nExample:\n\ncat passwords.csv | pass2pass -parser lastpass -store cmd './templates/dir-scheme' './cmd-pass.sh'\n")
 		fmt.Fprintf(w, `
-Currently implemented store types (shown with required arguments):
-plain <template-dir> <out-dir> - stores entries in plain-text files within output directory
-cmd <template-dir> <command> - invokes command (such as pass) to store entries
+Currently implemented store types (shown with required arguments): plain
+<template-dir> <out-dir> - stores entries in plain-text files within output
+directory cmd <template-dir> <command> - invokes command (such as pass) to
+store entries
 
-<template-dir> is a directory with Go text templates, used to configure out entries layout.
+<template-dir> is a directory with Go text templates, used to configure out
+entries layout.
 
-To create destination entry path Name and Grouping fields of the input record are cleaned
-with command, provided in -path-cleaner flag, than $name and $group substrings are replaced
-with those cleaned values within template path, after that -path-filter and -path-replacer
-command are applied to result. This allows to customize path creation rules and
-rearrange entries during import.
+To create destination entry path Name and Grouping fields of the input record
+are cleaned with command, provided in -path-cleaner flag, than $name and $group
+substrings are replaced with those cleaned values within template path, after
+that -path-filter and -path-replacer command are applied to result. This allows
+to customize path creation rules and rearrange entries during import.
+
+Either OS command or Go template can be specified for -path-cleaner,
+-path-filter and -path-replacer. pass2pass checks file's existance and
+executable flag. If file does not exist or is executable, pass2pass tries to
+execute the command. Otherwise it interprets file as Go template.
 
 `)
 	}
 
 	flag.Parse()
 
-	paths.Init(pathCleaner, pathFilter, pathReplacer)
+	err := paths.Init(pathCleaner, pathFilter, pathReplacer)
+	if err != nil {
+		errlog := log.New(os.Stderr, "ERR  ", 0)
+		errlog.Fatalf("fatal error: %v", err)
+	}
 
 	dataCh, errCh1 := parse.ParseAsync(parserType, os.Stdin)
 	errCh2 := store.StoreAsync(storeType, dataCh, flag.Args()...)

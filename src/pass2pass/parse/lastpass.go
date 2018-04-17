@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"html"
 	"io"
 
 	"github.com/gocarina/gocsv"
@@ -24,12 +25,12 @@ func lastpass(in io.Reader) (<-chan model.Entry, <-chan error) {
 				r.URL = ""
 			}
 			dataCh <- model.Entry{
-				URL:      r.URL,
-				Username: r.Username,
-				Password: r.Password,
-				Extra:    r.Extra,
-				Name:     r.Name,
-				Grouping: r.Grouping,
+				URL:      html.UnescapeString(r.URL),
+				Username: html.UnescapeString(r.Username),
+				Password: html.UnescapeString(r.Password),
+				Extra:    html.UnescapeString(r.Extra),
+				Name:     html.UnescapeString(r.Name),
+				Grouping: html.UnescapeString(r.Grouping),
 			}
 		}
 	}()
