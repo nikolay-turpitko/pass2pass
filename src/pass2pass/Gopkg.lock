@@ -2,14 +2,26 @@
 
 
 [[projects]]
+  name = "github.com/fatih/structs"
+  packages = ["."]
+  revision = "a720dfa8df582c51dee1b36feabb906bde1588bd"
+  version = "v1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/gocarina/gocsv"
   packages = ["."]
   revision = "a5c9099e2484f1551abb9433885e158610a25f4b"
 
+[[projects]]
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c63b60246416084d16accd1df90ec1f303f31d14e650ad67f0c895ed8ee6ce13"
+  inputs-digest = "16dc8e2f5896a69d2dca55e7ca9368a237f21b1e7ac1c15140c977264fd3d027"
   solver-name = "gps-cdcl"
   solver-version = 1

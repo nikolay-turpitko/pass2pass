@@ -8,8 +8,9 @@ cat sample.csv | \
     go run src/pass2pass/cmd/pass2pass.go \
         -parser lastpass \
         -store plain \
-        -path-cleaner  './templates/util/path-clean' \
-        -path-filter   './templates/util/path-filter' \
+        -field-cleaner-group './templates/util/field-clean-group' \
+        -field-cleaner-name './templates/util/field-clean-name' \
+        -path-filter './templates/util/path-filter' \
         -path-replacer './templates/util/path-replace' \
         "./templates/multiline-scheme" \
         "./out"
@@ -18,7 +19,8 @@ cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
 #        -store plain \
-#        -path-cleaner './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-group './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-name './scriptlets/cmd-path-clean.sh' \
 #        -path-filter './scriptlets/cmd-path-filter.sh' \
 #        -path-replacer './scriptlets/cmd-path-replace.sh' \
 #        "./templates/dir-scheme" \
@@ -28,7 +30,8 @@ cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
 #        -store cmd \
-#        -path-cleaner './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-group './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-name './scriptlets/cmd-path-clean.sh' \
 #        -path-filter './scriptlets/cmd-path-filter.sh' \
 #        -path-replacer './scriptlets/cmd-path-replace.sh' \
 #        "./templates/dir-scheme" \
@@ -38,7 +41,8 @@ cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
 #        -store cmd \
-#        -path-cleaner './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-group './scriptlets/cmd-path-clean.sh' \
+#        -field-cleaner-name './scriptlets/cmd-path-clean.sh' \
 #        -path-filter './scriptlets/cmd-path-filter.sh' \
 #        -path-replacer './scriptlets/cmd-path-replace.sh' \
 #        "./templates/multiline-scheme" \
@@ -48,8 +52,9 @@ cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
 #        -store cmd \
-#        -path-cleaner './scriptlets/cmd-path-clean.sh' \
-#        -path-filter './scriptlets/cmd-path-filter.sh' \
-#        -path-replacer './scriptlets/cmd-path-replace.sh' \
+#        -field-cleaner-group './templates/util/field-clean-group' \
+#        -field-cleaner-name './templates/util/field-clean-name' \
+#        -path-filter './templates/util/path-filter' \
+#        -path-replacer './templates/util/path-replace' \
 #        "./templates/multiline-scheme" \
 #        './scriptlets/cmd-pass.sh'

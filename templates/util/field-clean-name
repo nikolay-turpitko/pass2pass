@@ -1,0 +1,1 @@
+{{- $h := hostname .URL }}{{ if $h }}{{ $h }}/{{.Username}}{{ else }}{{ .Name | replace `\s+-\s+` `/` }}{{end -}}

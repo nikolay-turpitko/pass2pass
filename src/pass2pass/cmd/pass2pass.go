@@ -18,23 +18,25 @@ func main() {
 	log.Println("pass2pass started")
 
 	var (
-		parserType   string
-		storeType    string
-		pathCleaner  string
-		pathFilter   string
-		pathReplacer string
+		parserType        string
+		storeType         string
+		fieldCleanerName  string
+		fieldCleanerGroup string
+		pathFilter        string
+		pathReplacer      string
 	)
 
 	flag.StringVar(&parserType, "parser", "lastpass", "parser type for input data from stdin")
 	flag.StringVar(&storeType, "store", "cmd", "store type for output")
-	flag.StringVar(&pathCleaner, "path-cleaner", "", "command (or Go template) executed to clean path")
+	flag.StringVar(&fieldCleanerName, "field-cleaner-name", "", "command (or Go template) executed to clean Name field")
+	flag.StringVar(&fieldCleanerGroup, "field-cleaner-group", "", "command (or Go template) executed to clean Grouping field")
 	flag.StringVar(&pathFilter, "path-filter", "", "command (or Go template) executed to filter/exclude path")
 	flag.StringVar(&pathReplacer, "path-replacer", "", "command (or Go template) executed to replace path")
 
 	flag.Usage = func() {
 		w := flag.CommandLine.Output()
 		fmt.Fprintf(w, "\nUsage of %s:\n\n", os.Args[0])
-		fmt.Fprintf(w, "pass2pass [-parser PARSER_TYPE] [-store STORE_TYPE] [-path-cleaner PATH_CLEANER_CMD] [-path-filter PATH_FILTER_CMD] [-path-replacer PATH_REPLACER_CMD] ARGS_FOR_STORE ...\n\n")
+		fmt.Fprintf(w, "pass2pass [-parser PARSER_TYPE] [-store STORE_TYPE] [-field-cleaner-name PATH_CLEANER_CMD] [-field-cleaner-group PATH_CLEANER_CMD] [-path-filter PATH_FILTER_CMD] [-path-replacer PATH_REPLACER_CMD] ARGS_FOR_STORE ...\n\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(w, "\nExample:\n\ncat passwords.csv | pass2pass -parser lastpass -store cmd './templates/dir-scheme' './cmd-pass.sh'\n")
 		fmt.Fprintf(w, `
@@ -47,12 +49,12 @@ store entries
 entries layout.
 
 To create destination entry path Name and Grouping fields of the input record
-are cleaned with command, provided in -path-cleaner flag, than $name and $group
+are cleaned with command, provided in -field-cleaner-* flag, than $name and $group
 substrings are replaced with those cleaned values within template path, after
 that -path-filter and -path-replacer command are applied to result. This allows
 to customize path creation rules and rearrange entries during import.
 
-Either OS command or Go template can be specified for -path-cleaner,
+Either OS command or Go template can be specified for -field-cleaner-*,
 -path-filter and -path-replacer. pass2pass checks file's existance and
 executable flag. If file does not exist or is executable, pass2pass tries to
 execute the command. Otherwise it interprets file as Go template.
@@ -62,7 +64,7 @@ execute the command. Otherwise it interprets file as Go template.
 
 	flag.Parse()
 
-	err := paths.Init(pathCleaner, pathFilter, pathReplacer)
+	err := paths.Init(fieldCleanerName, fieldCleanerGroup, pathFilter, pathReplacer)
 	if err != nil {
 		errlog := log.New(os.Stderr, "ERR  ", 0)
 		errlog.Fatalf("fatal error: %v", err)

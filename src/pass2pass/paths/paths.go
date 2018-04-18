@@ -13,20 +13,34 @@ import (
 )
 
 // Init stores command lines, used to implement path manipulation tools.
-func Init(pathCleaner, pathFilter, pathReplacer string) error {
+func Init(fieldCleanerName, fieldCleanerGroup, pathFilter, pathReplacer string) error {
 	switch {
-	case pathCleaner == "":
-		Cleaner = noopCleaner{}
-	case isExecutable(pathCleaner):
-		Cleaner = cmdCleaner{pathCleaner}
+	case fieldCleanerName == "":
+		CleanerName = noopCleaner{true}
+	case isExecutable(fieldCleanerName):
+		CleanerName = cmdCleaner{true, fieldCleanerName}
 	default:
-		t, err := template.New(filepath.Base(pathCleaner)).
+		t, err := template.New(filepath.Base(fieldCleanerName)).
 			Funcs(tmplfunc.Funcs).
-			ParseFiles(pathCleaner)
+			ParseFiles(fieldCleanerName)
 		if err != nil {
 			return err
 		}
-		Cleaner = templateCleaner{t}
+		CleanerName = templateCleaner{t}
+	}
+	switch {
+	case fieldCleanerGroup == "":
+		CleanerGroup = noopCleaner{false}
+	case isExecutable(fieldCleanerGroup):
+		CleanerGroup = cmdCleaner{false, fieldCleanerGroup}
+	default:
+		t, err := template.New(filepath.Base(fieldCleanerGroup)).
+			Funcs(tmplfunc.Funcs).
+			ParseFiles(fieldCleanerGroup)
+		if err != nil {
+			return err
+		}
+		CleanerGroup = templateCleaner{t}
 	}
 	switch {
 	case pathFilter == "":
@@ -62,12 +76,12 @@ func Init(pathCleaner, pathFilter, pathReplacer string) error {
 // PathFromFields constructs path of target entry from its fields and the path
 // of the template. It can invoke external command (if provided) to clean
 // fields before using them to construct path.
-func PathFromFields(templPath string, r model.Entry) (string, error) {
-	name, err := Cleaner.Do(r.Name)
+func PathFromFields(templPath string, entry model.Entry) (string, error) {
+	name, err := CleanerName.Do(entry)
 	if err != nil {
 		return "", err
 	}
-	group, err := Cleaner.Do(r.Grouping)
+	group, err := CleanerGroup.Do(entry)
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +92,7 @@ func PathFromFields(templPath string, r model.Entry) (string, error) {
 }
 
 type cleaner interface {
-	Do(s string) (string, error)
+	Do(entry model.Entry) (string, error)
 }
 
 type filter interface {
@@ -90,24 +104,35 @@ type replacer interface {
 }
 
 var (
-	Cleaner  cleaner
-	Filter   filter
-	Replacer replacer
+	CleanerName  cleaner
+	CleanerGroup cleaner
+	Filter       filter
+	Replacer     replacer
 )
 
-type noopCleaner struct{}
+type noopCleaner struct {
+	name bool
+}
 
-func (noopCleaner) Do(s string) (string, error) {
-	return s, nil
+func (c noopCleaner) Do(entry model.Entry) (string, error) {
+	if c.name {
+		return entry.Name, nil
+	}
+	return entry.Grouping, nil
 }
 
 type cmdCleaner struct {
+	name    bool
 	cmdLine string
 }
 
-func (c cmdCleaner) Do(s string) (string, error) {
+func (c cmdCleaner) Do(entry model.Entry) (string, error) {
 	cmd := exec.Command(c.cmdLine)
-	cmd.Stdin = strings.NewReader(s)
+	if c.name {
+		cmd.Stdin = strings.NewReader(entry.Name)
+	} else {
+		cmd.Stdin = strings.NewReader(entry.Grouping)
+	}
 	out, err := cmd.Output()
 	return string(out), err
 }
@@ -116,9 +141,9 @@ type templateCleaner struct {
 	tmpl *template.Template
 }
 
-func (c templateCleaner) Do(s string) (string, error) {
+func (c templateCleaner) Do(entry model.Entry) (string, error) {
 	var b bytes.Buffer
-	err := c.tmpl.Execute(&b, s)
+	err := c.tmpl.Execute(&b, entry)
 	if err != nil {
 		return "", err
 	}

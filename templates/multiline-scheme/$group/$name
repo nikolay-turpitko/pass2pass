@@ -1,7 +1,4 @@
 {{.Password}}
 ---
-{{if .URL}}url: {{.URL}}{{end}}
-{{if .Username}}username: {{.Username}}{{end}}
-{{range $k, $v := extractMeta "extra" .Extra}}
-{{$k}}: {{$v}}
-{{end}}
+{{ . | toMap | mapKeys toLower | excludeKey "password" "name" "grouping" "extra" | yaml -}}
+{{extractMeta "extra" .Extra | mapKeys toLower | yaml}}
