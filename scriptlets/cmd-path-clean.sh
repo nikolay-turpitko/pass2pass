@@ -9,5 +9,5 @@ tr "[:upper:]" "[:lower:]" | \
         -e 's%[[:space:]]+-[[:space:]]+%/%g' \
         -e 's%:/+%-%g' \
         -e 's%[[:space:]]+%-%g' \
-        -e 's%&amp;%and%g' | \
+        -e 's%&%and%g' | \
     tr -d "\n"

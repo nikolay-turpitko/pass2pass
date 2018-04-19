@@ -4,16 +4,16 @@ rm -rf ./out
 
 source ./env-$USER
 
-cat sample.csv | \
-    go run src/pass2pass/cmd/pass2pass.go \
-        -parser lastpass \
-        -store plain \
-        -field-cleaner-group './templates/util/field-clean-group' \
-        -field-cleaner-name './templates/util/field-clean-name' \
-        -path-filter './templates/util/path-filter' \
-        -path-replacer './templates/util/path-replace' \
-        "./templates/multiline-scheme" \
-        "./out"
+#cat sample.csv | \
+#    go run src/pass2pass/cmd/pass2pass.go \
+#        -parser lastpass \
+#        -store plain \
+#        -field-cleaner-group './templates/util/field-clean-group' \
+#        -field-cleaner-name './templates/util/field-clean-name' \
+#        -path-filter './templates/util/path-filter' \
+#        -path-replacer './templates/util/path-replace' \
+#        "./templates/multiline-scheme" \
+#        "./out"
 
 #cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
@@ -48,13 +48,13 @@ cat sample.csv | \
 #        "./templates/multiline-scheme" \
 #        './scriptlets/cmd-plain.sh'
 
-#cat sample.csv | \
-#    go run src/pass2pass/cmd/pass2pass.go \
-#        -parser lastpass \
-#        -store cmd \
-#        -field-cleaner-group './templates/util/field-clean-group' \
-#        -field-cleaner-name './templates/util/field-clean-name' \
-#        -path-filter './templates/util/path-filter' \
-#        -path-replacer './templates/util/path-replace' \
-#        "./templates/multiline-scheme" \
-#        './scriptlets/cmd-pass.sh'
+cat sample.csv | \
+    go run src/pass2pass/cmd/pass2pass.go \
+        -parser lastpass \
+        -store cmd \
+        -field-cleaner-group './templates/util/field-clean-group' \
+        -field-cleaner-name './templates/util/field-clean-name' \
+        -path-filter './templates/util/path-filter' \
+        -path-replacer './templates/util/path-replace' \
+        "./templates/multiline-scheme" \
+        './scriptlets/cmd-pass.sh'

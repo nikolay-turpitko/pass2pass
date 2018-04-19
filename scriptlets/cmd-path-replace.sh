@@ -18,9 +18,9 @@ sed -E \
     -e 's%^private/other/hightail%depricated/hightail%g' \
     -e 's%^private/mail-and-im/(icq|sibnet|kate.*)%depricated/email-and-im/\1%g' \
     -e 's%^private/mail-and-im/mail.ru%email-and-im/mailru/personal%g' \
-    -e 's%^private/mail-and-im/google/tnl1977%email-and-im/google/personal%g' \
-    -e 's%^private/mail-and-im/tnl.disposal.box%email-and-im/google/disposal%g' \
-    -e 's%^private/mail-and-im/zoho/tnl1977%email-and-im/zoho/personal%g' \
+    -e 's%^private/mail-and-im/.*disposal.*/%email-and-im/google/disposal/%g' \
+    -e 's%^private/mail-and-im/google/.*/%email-and-im/google/personal/%g' \
+    -e 's%^private/mail-and-im/zoho/.*/%email-and-im/zoho/personal/%g' \
     -e 's%^private/mail-and-im/bitlbee%email-and-im/bitlbee%g' \
     -e 's%^private/other/(.*)/%JOB/\1/%g' \
     -e 's%^private%%g' \
