@@ -80,3 +80,10 @@ Currently it's completely for my own needs. Use it for your own risk. You may
 fork it and brush up if you like. Ask questions, report bugs in Github's issue
 tracker, send PRs. If I'll see some interest to it I'll, probably, find some
 time to make it more user friendly. For my own needs it's perfect as it is.
+
+## Links
+
+- https://cerb.ai/guides/mail/gpg-setup-on-mac/#installing-software
+- https://github.com/justwatchcom/gopass/blob/master/docs/setup.md#filling-in-passwords-from-browser
+- https://github.com/martinhoefling/gopassbridge
+

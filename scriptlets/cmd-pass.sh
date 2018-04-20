@@ -1,5 +1,6 @@
 #!/bin/bash
 
 # This script saves password entry using `pass` comand.
+# Mac OS X: https://github.com/discoteq/flock
 
-flock .lock pass insert -m "$1"
+flock .lock gopass insert -m "$1"
