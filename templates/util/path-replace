@@ -20,7 +20,7 @@
 {{- $ := $ | replace `^private/telephony/(.*megafon.*)` `telephony/megafon/$1` -}}
 {{- $ := $ | replace `^private/telephony/([^/]+)/.*` `telephony/$1` -}}
 {{- $ := $ | replace `^private/telephony` `telephony` -}}
-{{- $ := $ | replace `^private/mail-and-im/(.*icq.*|.*sibnet.*)` `depricated/email-and-im/$1` -}}
+{{- $ := $ | replace `^private/mail-and-im/(.*icq.*|.*sibnet.*)/.*` `depricated/email-and-im/$1` -}}
 {{- $ := $ | replace `^private/mail-and-im/(.*)/(.*kate.*)` `depricated/email-and-im/kate/$1` -}}
 {{- $ := $ | replace `^private/mail-and-im/BitlBee/.*` `email-and-im/bitlbee` -}}
 {{- $ := $ | replace `^private/mail-and-im/(.*mail\.ru.*|.*zoho.*)/.*` `email-and-im/$1/personal` -}}
