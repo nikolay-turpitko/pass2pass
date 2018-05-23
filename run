@@ -4,6 +4,10 @@ rm -rf ./out
 
 source ./env-$USER
 
+## Reads: csv file in lastpass format
+## Outputs: folder with plain text files
+## Transforms data with: Go templates
+## Scheme: multiline
 #cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
@@ -15,6 +19,10 @@ source ./env-$USER
 #        "./templates/multiline-scheme" \
 #        "./out"
 
+## Reads: csv file in lastpass format
+## Outputs: folder with plain text files
+## Transforms data with: bash scriptlets
+## Scheme: directories
 #cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
@@ -26,6 +34,10 @@ source ./env-$USER
 #        "./templates/dir-scheme" \
 #        "./out"
 
+## Reads: csv file in lastpass format
+## Outputs: folder with plain text files (using bash scriptlet)
+## Transforms data with: bash scriptlets
+## Scheme: directories
 #cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
@@ -37,6 +49,10 @@ source ./env-$USER
 #        "./templates/dir-scheme" \
 #        './scriptlets/cmd-plain.sh'
 
+## Reads: csv file in lastpass format
+## Outputs: folder with plain text files (using bash scriptlet)
+## Transforms data with: bash scriptlets
+## Scheme: multiline
 #cat sample.csv | \
 #    go run src/pass2pass/cmd/pass2pass.go \
 #        -parser lastpass \
@@ -48,13 +64,34 @@ source ./env-$USER
 #        "./templates/multiline-scheme" \
 #        './scriptlets/cmd-plain.sh'
 
-cat sample.csv | \
+## Primary usage scenario - actual import into gopass store.
+## Reads: csv file in lastpass format
+## Outputs: gopass store (using bash scriptlet)
+## Transforms data with: Go templates
+## Scheme: multiline
+#cat sample.csv | \
+#    go run src/pass2pass/cmd/pass2pass.go \
+#        -parser lastpass \
+#        -store cmd \
+#        -field-cleaner-group './templates/util/field-clean-group' \
+#        -field-cleaner-name './templates/util/field-clean-name' \
+#        -path-filter './templates/util/path-filter' \
+#        -path-replacer './templates/util/path-replace' \
+#        "./templates/multiline-scheme" \
+#        './scriptlets/cmd-pass.sh'
+
+## New use case - extract URLs from password store to use in browser.
+## Note: I used markdown format, but it's not quite difficult to prepare html or whatever.
+## Note: gopass v1.7 or higher is required, because of specific json API function.
+## Reads: gopass store (entry names on stdin, requests metadata via gopass json api)
+## Outputs: folder with markdown files, containing extracted URLs (for exporting bookmarks from gopass)
+## Transforms data with: Go templates (*-ex suffix means they are for export, not extended or extra ordinal)
+## Scheme: bookmarks-markdown
+gopass ls -f | \
     go run src/pass2pass/cmd/pass2pass.go \
-        -parser lastpass \
+        -parser gopass \
         -store cmd \
-        -field-cleaner-group './templates/util/field-clean-group' \
-        -field-cleaner-name './templates/util/field-clean-name' \
-        -path-filter './templates/util/path-filter' \
-        -path-replacer './templates/util/path-replace' \
-        "./templates/multiline-scheme" \
-        './scriptlets/cmd-pass.sh'
+        -field-cleaner-group './templates/util/field-clean-group-ex' \
+        -field-cleaner-name './templates/util/field-clean-name-ex' \
+        "./templates/bookmarks-markdown" \
+        "./scriptlets/cmd-plain-append.sh"

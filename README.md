@@ -59,9 +59,11 @@ add parser/store code into corresponded packages by analogy with existing one.
 I created it for my own use, so it's not quite user friendly. It's not `go
 get`able.  Use git to clone the project, then `cp ./env-nick ./env-$USER` and
 modify it, then use `./run` to have an idea how to invoke it. And yes, you'll
-need Go compiler installed. Also run tool with `-h` flag to see help on flags
-and arguments and check out sources. OK, if someone ever need it, I'll think
-about making it more convenient to install.
+need Go compiler installed. And don't forget to execute `dep ensure` in 
+`./src/pass2pass` dir. After that you should be able to build and run it. To 
+see help on flags and usage you may want to run it with `-h` flag. And, of 
+course, you may want to look into sources.  OK, if someone else ever need it, 
+I'll think about making it more convenient to install.
 
 Take a look into `./scriptlets` and `./templates` folders. These are for user's
 customization. It's where I put my own scripts and templates I used to

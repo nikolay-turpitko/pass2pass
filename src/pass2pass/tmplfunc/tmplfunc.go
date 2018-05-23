@@ -31,6 +31,9 @@ var Funcs = map[string]interface{}{
 	"yaml":        renderYAML,
 
 	"hostname": hostname,
+
+	"head": head,
+	"tail": tail,
 }
 
 // exclude is kind of like `grep -v` - it returns its last argument if it does
@@ -117,7 +120,16 @@ func mapKeys(f func(rune) rune, m map[string]interface{}) map[string]interface{}
 // extractMeta attempts to extract yaml-like meta data from supplied string.
 // It returns map of the extracted key-value pairs, putting all extra lines
 // into the tag with name supplied in extraTag argument.
-func extractMeta(extraTag string, s string) (map[string]interface{}, error) {
+func extractMeta(extraTag string, val interface{}) (map[string]interface{}, error) {
+	s := ""
+	switch val := val.(type) {
+	case string:
+		s = val
+	case map[string]interface{}:
+		return val, nil
+	default:
+		s = fmt.Sprintf("%v", val)
+	}
 	m := map[string]interface{}{}
 	// try to parse as valid yaml first
 	err := yaml.Unmarshal([]byte(s), &m)
@@ -175,4 +187,41 @@ func hostname(s string) string {
 		return ""
 	}
 	return u.Hostname()
+}
+
+// head returns n groups of the string, separated by sep from the beginning of string.
+// If n is negative, then number of returning groups equals
+// to len(of separated parts)-n.
+func head(sep string, n int, s string) string {
+	p := strings.Split(s, sep)
+	if n == 0 {
+		return ""
+	}
+	if n < 0 {
+		n = len(p) + n
+		if n < 0 {
+			return ""
+		}
+	}
+	p = p[:n]
+	return strings.Join(p, sep)
+}
+
+// tail returns n groups of the string, separated by sep from the end of the string.
+// If n is negative, then number of returning groups equals
+// to len(of separated parts)-n.
+func tail(sep string, n int, s string) string {
+	p := strings.Split(s, sep)
+	if n == 0 {
+		return ""
+	}
+	n = -n
+	if n < 0 {
+		n = len(p) + n
+		if n < 0 {
+			return ""
+		}
+	}
+	p = p[n:]
+	return strings.Join(p, sep)
 }

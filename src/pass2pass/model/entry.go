@@ -5,7 +5,7 @@ type Entry struct {
 	URL      string
 	Username string
 	Password string
-	Extra    string
+	Extra    interface{}
 	Name     string
 	Grouping string
 }

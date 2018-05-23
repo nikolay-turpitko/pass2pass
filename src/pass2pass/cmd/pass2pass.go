@@ -76,9 +76,17 @@ execute the command. Otherwise it interprets file as Go template.
 	log.Println("pass2pass waits for data on stdin")
 
 	var wg sync.WaitGroup
-	processErrorsAsync(&wg, errCh1, false)
-	processErrorsAsync(&wg, errCh2, true)
+	countParse := map[string]int{}
+	countStore := map[string]int{}
+	processErrorsAsync(&wg, errCh1, countParse, "parse")
+	processErrorsAsync(&wg, errCh2, countStore, "store")
 	wg.Wait()
+	log.Println("Entries processed:")
+	log.Printf("- All: %d", countParse["ALL"])
+	log.Printf("- Successful: %d", countStore["SUCCESS"])
+	log.Printf("- Errors: %d", countParse["ERRORS"]+countStore["ERRORS"])
+	log.Printf("- Parse errors: %d", countParse["ERRORS"])
+	log.Printf("- Sotre errors: %d", countStore["ERRORS"])
 
 	log.Println("pass2pass finished")
 }
@@ -90,12 +98,12 @@ execute the command. Otherwise it interprets file as Go template.
 func processErrorsAsync(
 	wg *sync.WaitGroup,
 	errs <-chan error,
-	printStats bool) {
+	count map[string]int,
+	prefix string) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		errlog := log.New(os.Stderr, "ERR  ", 0)
-		count := map[string]int{}
+		errlog := log.New(os.Stderr, fmt.Sprintf("ERR  %s ", prefix), 0)
 		for err := range errs {
 			count["ALL"]++
 			if err == nil {
@@ -113,12 +121,6 @@ func processErrorsAsync(
 					errlog.Printf("error: %v", err)
 				}
 			}
-		}
-		if printStats {
-			log.Println("Entries processed:")
-			log.Printf("- All: %d", count["ALL"])
-			log.Printf("- Successful: %d", count["SUCCESS"])
-			log.Printf("- Errors: %d", count["ERRORS"])
 		}
 	}()
 }
